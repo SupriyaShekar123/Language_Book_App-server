@@ -23,35 +23,30 @@ router.get("/user/:id", async function getUserBooks(req, res, next) {
   }
 });
 
-// connect with login
 
-router.post("/login", async ( req, res, next)=>{
-  // getparams => email and password validate
-  const {email,password} = req.body;
-  if(!email || !password){
-      res.status(400).send('missing login parameters')
+
+// create a new user with Signup
+
+router.post('/', async(req,res,next) =>{
+  try{
+
+    const {email,password,name}=req.body
+
+    if(!password || !email || !name){
+      res.status(400).send("missing some user parameters")
   }else{
-          const user = await User.findOne({where : {email}})
-          //look in db for user with the email
+    const hashedPassword = bcrypt.hashSync(password, 10)
 
-          if(!user){
-              res.status(404).send('User with that email adress not found')
-      }else {
-          // check if password match
-
-          const passwordsMatch = bcrypt.compareSync(password, user.password)
-          if (passwordsMatch){
-              const token= toJWT({userId: user.id})
-              //guy exist have to log him in
-              console.log('right password');
-
-                  delete user.dataValues["password"]; // don't send back the password hash
-                  return res.status(200).send({ token, ...user.dataValues });
-              //create JWT
-          }else{
-              res.status(400).send("Wrong Password")
-          }
-      }  
+    const newUser= await User.create({
+        email,
+        password : hashedPassword,
+        name,
+    })
+    res.send(newUser)
+  }
+  }catch(error){
+    next(error)
   }
 })
+
 module.exports = router;
