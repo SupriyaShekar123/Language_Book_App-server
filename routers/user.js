@@ -3,6 +3,9 @@ const User = require("../models/").user;
 const Books = require("../models/").books;
 const { Router } = express;
 const router = new Router();
+const bcrypt = require ('bcrypt')
+
+const {toJWT} = require('../auth/jwt')
 
 router.get("/user/:id", async function getUserBooks(req, res, next) {
   console.log("VALUE OF ID", req.params.id);
@@ -19,5 +22,31 @@ router.get("/user/:id", async function getUserBooks(req, res, next) {
     console.log("error", e.message);
   }
 });
+
+
+
+// create a new user with Signup
+
+router.post('/', async(req,res,next) =>{
+  try{
+
+    const {email,password,name}=req.body
+
+    if(!password || !email || !name){
+      res.status(400).send("missing some user parameters")
+  }else{
+    const hashedPassword = bcrypt.hashSync(password, 10)
+
+    const newUser= await User.create({
+        email,
+        password : hashedPassword,
+        name,
+    })
+    res.send(newUser)
+  }
+  }catch(error){
+    next(error)
+  }
+})
 
 module.exports = router;
