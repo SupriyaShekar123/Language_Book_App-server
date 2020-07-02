@@ -4,6 +4,8 @@ const User= require ("../models").user;
 const bcrypt = require ('bcrypt')
 const {toJWT} = require('../auth/jwt')
 
+console.log(toJWT);
+
 const router = new Router()
 
 // connect with login

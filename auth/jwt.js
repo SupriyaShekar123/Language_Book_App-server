@@ -1,3 +1,16 @@
-const bcrypt = require ('bcrypt')
+const jwt = require("jsonwebtoken")
 
-const {toJWT} = require('../auth/jwt')
+const secret = process.env.JWT_SECRET || "e9rp^&^*&@9sejg)DSUA)jpfds8394jdsfn,m";
+
+//create a token
+
+function toJWT(data){
+    return jwt.sign(data,secret, {expiresIn: "2h"});
+}
+
+// Checks tokens
+function toData (token){
+    return jwt.verify(token, secret)
+}
+
+module.exports = {toJWT, toData}
