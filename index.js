@@ -5,10 +5,9 @@ const cors = require("cors");
 const jsonParser = express.json();
 app.use(jsonParser);
 app.use(cors());
-const corsMiddleware =cors();
+const corsMiddleware = cors();
 
 const PORT = 5000;
-
 
 app.listen(PORT, () => {
   console.log("Listening on port", PORT);
@@ -17,6 +16,10 @@ app.listen(PORT, () => {
 //routers
 const User = require("./routers/user");
 app.use("/signup", User);
+app.use("/", User);
 
-const userLogin = require("./routers/auth")
-app.use("/login", userLogin)
+const userLogin = require("./routers/auth");
+app.use("/login", userLogin);
+
+const Books = require("./routers/books");
+app.use("/", Books);
