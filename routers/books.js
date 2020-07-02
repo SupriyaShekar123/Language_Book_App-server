@@ -17,6 +17,19 @@ router.get("/books/:id", async function getUserBooks(req, res, next) {
   }
 });
 
+// get books by userId
+router.get("/bookselection/:userId", async (req,res,next) =>{
+    try{
+      const {userId}=req.params
+      const allMessages = await Books.findAll({where :{userId : userId}})
+
+      res.json(allMessages)
+    }catch(error){
+      next(error)
+    }
+})
+
+
 router.post("/books", async (req, res) => {
   // console.log("reqeust body", req.body);
   try {
