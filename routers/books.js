@@ -39,6 +39,7 @@ router.post("/books", async (req, res) => {
       description,
       category,
       language,
+      link,
       imageUrl,
       userId,
     } = req.body;
@@ -49,6 +50,7 @@ router.post("/books", async (req, res) => {
       !description ||
       !category ||
       !language ||
+      !link ||
       !imageUrl ||
       !userId
     ) {
@@ -61,6 +63,7 @@ router.post("/books", async (req, res) => {
         description,
         category,
         language,
+        link,
         imageUrl,
         userId,
       });
