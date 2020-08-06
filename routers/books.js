@@ -75,4 +75,49 @@ router.post("/books", async (req, res) => {
   }
 });
 
+router.delete("/books", async (req, res) => {
+  // console.log("reqeust body", req.body);
+  try {
+    const {
+      name,
+      author,
+      description,
+      category,
+      language,
+      link,
+      imageUrl,
+      userId,
+    } = req.body;
+    console.log("request testing values :", req.body);
+    if (
+      !name ||
+      !author ||
+      !description ||
+      !category ||
+      !language ||
+      !link ||
+      !imageUrl ||
+      !userId
+    ) {
+      res.status(400).send("missing parameters");
+    } else {
+      // const hashedPassword = bcrypt.hashSync(password, 10);
+      const event = await Books.delete({
+        name,
+        author,
+        description,
+        category,
+        language,
+        link,
+        imageUrl,
+        userId,
+      });
+      res.json(event);
+    }
+  } catch (error) {
+    console.log(error.message);
+    // next(e);
+  }
+});
+
 module.exports = router;
