@@ -43,7 +43,7 @@ router.post("/books", async (req, res) => {
       imageUrl,
       userId,
     } = req.body;
-    console.log("request testing values :", req.body);
+    console.log("request added book testing values :", req.body);
     if (
       !name ||
       !author ||
@@ -75,41 +75,42 @@ router.post("/books", async (req, res) => {
   }
 });
 
-router.delete("/books", async (req, res) => {
+router.put("/bookselection/:userId", async (req, res) => {
   // console.log("reqeust body", req.body);
   try {
-    const {
+    const {  
       name,
       author,
       description,
       category,
       language,
-      link,
       imageUrl,
-      userId,
+      link,
+      userId
     } = req.body;
     console.log("request testing values :", req.body);
-    if (
+    
+    if ( 
       !name ||
       !author ||
       !description ||
       !category ||
       !language ||
-      !link ||
       !imageUrl ||
+      !link ||
       !userId
     ) {
       res.status(400).send("missing parameters");
     } else {
       // const hashedPassword = bcrypt.hashSync(password, 10);
-      const event = await Books.delete({
+      const event = await Books.patch({
         name,
         author,
         description,
         category,
         language,
-        link,
         imageUrl,
+        link,
         userId,
       });
       res.json(event);
